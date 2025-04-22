@@ -28,7 +28,7 @@ const Student = {
     });
   },
 
-  create: async function (
+  create: function (
     first_name,
     last_name,
     email,
@@ -36,35 +36,35 @@ const Student = {
     subject,
     marks
   ) {
-    const client = await pool.connect(); // get client from pool
-    try {
-      await client.query("BEGIN"); // start transaction
+    return new Promise(async (resolve, reject) => {
+      const client = await pool.connect();
+      try {
+        await client.query("BEGIN");
 
-      // Insert into students
-      const studentResult = await client.query(
-        `INSERT INTO students (first_name, last_name, email, date_of_birth)
-       VALUES ($1, $2, $3, $4)
-       RETURNING *`,
-        [first_name, last_name, email, date_of_birth]
-      );
+        const studentResult = await client.query(
+          `INSERT INTO students (first_name, last_name, email, date_of_birth)
+           VALUES ($1, $2, $3, $4)
+           RETURNING *`,
+          [first_name, last_name, email, date_of_birth]
+        );
 
-      const student = studentResult.rows[0];
+        const student = studentResult.rows[0];
 
-      // Insert into marks using student.id
-      await client.query(
-        `INSERT INTO marks (student_id, subject, marks)
-       VALUES ($1, $2, $3)`,
-        [student.id, subject, marks]
-      );
+        await client.query(
+          `INSERT INTO marks (student_id, subject, marks)
+           VALUES ($1, $2, $3)`,
+          [student.id, subject, marks]
+        );
 
-      await client.query("COMMIT"); // commit transaction
-      return { rows: [student] }; // return student info
-    } catch (err) {
-      await client.query("ROLLBACK"); // rollback on error
-      throw err;
-    } finally {
-      client.release(); // release connection
-    }
+        await client.query("COMMIT");
+        resolve({ rows: [student] });
+      } catch (err) {
+        await client.query("ROLLBACK");
+        reject(err);
+      } finally {
+        client.release();
+      }
+    });
   },
 
   update: function (studentId, first_name, last_name, email, date_of_birth) {
