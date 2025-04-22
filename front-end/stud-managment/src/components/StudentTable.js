@@ -1,4 +1,3 @@
-// src/components/StudentTable.js
 import React from "react";
 import { Button, Table } from "react-bootstrap";
 

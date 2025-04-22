@@ -1,4 +1,3 @@
-// src/components/Pagination.js
 import React from "react";
 import { Pagination as BootstrapPagination } from "react-bootstrap";
 

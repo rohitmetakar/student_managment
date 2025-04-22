@@ -1,4 +1,3 @@
-// src/services/studentService.js
 import axios from "axios";
 
 const API = "http://localhost:4001/api/students";
