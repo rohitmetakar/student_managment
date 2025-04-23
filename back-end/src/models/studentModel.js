@@ -61,8 +61,6 @@ const Student = {
       } catch (err) {
         await client.query("ROLLBACK");
         reject(err);
-      } finally {
-        client.release();
       }
     });
   },
