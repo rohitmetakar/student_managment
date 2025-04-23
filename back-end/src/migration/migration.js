@@ -18,7 +18,7 @@ exports.up = (pgm) => {
       onDelete: "CASCADE",
     },
     subject: { type: "varchar(100)", notNull: true },
-    marks: { type: "integer", notNull: true, check: "marks BETWEEN 0 AND 100" },
+    marks: { type: "integer", notNull: true },
     created_at: { type: "timestamp", default: pgm.func("current_timestamp") },
   });
 };
