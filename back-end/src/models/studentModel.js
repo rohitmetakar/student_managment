@@ -4,7 +4,7 @@ const Student = {
   getAll: function (limit, offset) {
     return new Promise((resolve, reject) => {
       const query = `SELECT s.id, s.first_name, s.last_name, s.email, s.date_of_birth, m.subject, m.marks FROM students s
-      LEFT JOIN marks m ON s.id = m.student_id WHERE s.is_deleted IS NULL ORDER BY s.id ASC LIMIT ${limit} OFFSET ${offset}`;
+      LEFT JOIN marks m ON s.id = m.student_id WHERE s.is_deleted IS NULL ORDER BY s.id DESC LIMIT ${limit} OFFSET ${offset}`;
       pool.query(query, [], (err, result) => {
         if (err) reject(err);
         else resolve(result);
