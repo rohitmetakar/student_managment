@@ -1,4 +1,3 @@
-// src/config/db.js
 const { Pool } = require("pg");
 require("dotenv").config();
 
@@ -10,12 +9,11 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-pool.connect((err, client, release) => {
+pool.connect((err) => {
   if (err) {
     return console.error("Database connection error:", err);
   }
   console.log("Connected to PostgreSQL database");
-  release();
 });
 
 module.exports = pool;
